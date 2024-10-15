@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5ebeb;
+            background-image: url('call.jpg'); /* Background image */
+            background-size: 95%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .calculator {
+            background-color: #050202;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .display {
+            width: 100%;
+            height: 80px;
+            background-color: #615f5f;
+            color: #fff;
+            font-size: 24px;
+            text-align: right;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .input-display {
+            font-size: 30px;
+            color: #aaa;
+        }
+
+        .output-display {
+            font-size: 32px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .calc-button {
+            width: 60px;
+            height: 60px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            text-align: center;
+            line-height: 60px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+        }
+
+        .calc-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .calc-button:active {
+            background-color: #d0d0d0;
+        }
+
+        .operator {
+            background-color: #ff9f43;
+            color: white;
+        }
+
+        .equal {
+            background-color: #38ada9;
+            color: white;
+        }
+
+        .clear {
+            background-color: #ee5253;
+            color: white;
+        }
+
+        .backspace {
+            background-color: #ff6b6b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display">
+            <div class="input-display" id="inputDisplay"></div>
+            <div class="output-display" id="outputDisplay"></div>
+        </div>
+
+        <div class="buttons">
+            <button class="calc-button clear" onclick="clearDisplay()">C</button>
+            <button class="calc-button backspace" onclick="backspace()">⌫</button>
+            <button class="calc-button operator" onclick="appendToDisplay('%')">%</button>
+            <button class="calc-button operator" onclick="appendToDisplay('/')">/</button>
+
+            <button class="calc-button" onclick="appendToDisplay('7')">7</button>
+            <button class="calc-button" onclick="appendToDisplay('8')">8</button>
+            <button class="calc-button" onclick="appendToDisplay('9')">9</button>
+            <button class="calc-button operator" onclick="appendToDisplay('*')">*</button>
+
+            <button class="calc-button" onclick="appendToDisplay('4')">4</button>
+            <button class="calc-button" onclick="appendToDisplay('5')">5</button>
+            <button class="calc-button" onclick="appendToDisplay('6')">6</button>
+            <button class="calc-button operator" onclick="appendToDisplay('-')">-</button>
+
+            <button class="calc-button" onclick="appendToDisplay('1')">1</button>
+            <button class="calc-button" onclick="appendToDisplay('2')">2</button>
+            <button class="calc-button" onclick="appendToDisplay('3')">3</button>
+            <button class="calc-button operator" onclick="appendToDisplay('+')">+</button>
+
+            <button class="calc-button" onclick="appendToDisplay('00')">00</button>
+            <button class="calc-button" onclick="appendToDisplay('0')">0</button>
+            <button class="calc-button" onclick="appendToDisplay('.')">.</button>
+            <button class="calc-button equal" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let input = '';
+
+        function appendToDisplay(value) {
+            input += value;
+            document.getElementById('inputDisplay').innerText = input;
+        }
+
+        function clearDisplay() {
+            input = '';
+            document.getElementById('inputDisplay').innerText = '';
+            document.getElementById('outputDisplay').innerText = '';
+        }
+
+        function backspace() {
+            input = input.slice(0, -1);
+            document.getElementById('inputDisplay').innerText = input;
+        }
+
+        function calculate() {
+            const outputDisplay = document.getElementById('outputDisplay');
+            try {
+                // Handle percentage before evaluation
+                if (input.includes('%')) {
+                    input = input.replace(/(\d+)%/g, (match, number) => {
+                        return number / 100;
+                    });
+                }
+
+                const result = eval(input);
+                outputDisplay.innerText = result;
+            } catch (error) {
+                outputDisplay.innerText = 'Error';
+            }
+        }
+    </script>
+</body>
+</html>
